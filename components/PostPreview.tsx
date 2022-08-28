@@ -35,7 +35,7 @@ export default function PostPreview(props: {post: any}) {
                         </Typography>
                     </Box>
                     <Typography variant="h6" component="h2">{`${post.title}`}</Typography>
-                    {(thumbnailUrl && thumbnailUrl !== 'self') ? <img src={thumbnailUrl} alt={post.name} /> : null}
+                    {(thumbnailUrl && thumbnailUrl !== 'self') ? <Image src={thumbnailUrl} alt={post.name} layout="responsive" width="240" height="100%"/> : null}
                     <Box sx={{
                         display: "flex",
                     }}>

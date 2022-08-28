@@ -73,7 +73,7 @@ export default function Comment(props: { comment: any, replies?: any}) {
             <Typography variant="body2" m={1}><ArrowUpwardIcon />{score}<ArrowDownwardIcon /></Typography>
             <Button variant="text" startIcon={<CommentIcon />} >{`${numberOfReplies} comments`}</Button>
             </Box>
-            {props.replies ? props.replies.map((reply:any, index: number) => reply.body ? <Comment comment={reply} sx={{my: 3}}/> : null) : null}
+            {props.replies ? props.replies.map((reply:any, index: number) => reply.body ? <Comment comment={reply} /> : null) : null}
         </AccordionDetails>
       </Accordion>
     </>
