@@ -1,27 +1,27 @@
 import { Typography, Box, Stack, Button } from "@mui/material";
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import CommentIcon from '@mui/icons-material/Comment';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import Link from "next/link";
 import { GetServerSideProps } from "next";
-import Image from "next/image";
 import { marked } from 'marked';
+import Image from "next/image";
 import Comment from "../../../../../components/Comment";
 
 export default function PostComments(props: { post: any, comments: any }): JSX.Element {
     const post = props.post;
     const comments = props.comments.map((comment: any, index: number) => {
-        //if(index > 100) { return }
-        // const replies = comment.replies.data.children;
+        if(index > 100) { return }
         return {
             body: comment.body,
             author: comment.author,
-            replies: comment.replies ? comment.replies.data.children.map(reply => reply.data) : null,            
+            score: comment.score,
+            replies: comment.replies ? comment.replies.data.children.map((reply: any) => reply.data) : null,            
         }
     });
-    console.log(comments);
     const subreddit = post.subreddit_name_prefixed;
+    const gallery = post.gallery_data ? post.gallery_data.items : null;
+    console.log(gallery)
     return (
         <>
             <Typography variant="h2"><Link href={`/${subreddit}`}>{subreddit}</Link></Typography>
@@ -50,7 +50,12 @@ export default function PostComments(props: { post: any, comments: any }): JSX.E
                         {` ${5} hours ago.`} 
                         </Typography>
                     </Box>
-                    {post.selftext && <Typography dangerouslySetInnerHTML={{__html: marked(post.selftext)}} m={2}></Typography>}
+                    <Box sx={{
+                        p: 2,
+                    }}>
+                        {post.thumbnail !== "self" ? <Image src={post.thumbnail} width={'100%'} height={"100%"} layout="responsive" alt={post.name}/> : null}
+                        {post.selftext && <Typography dangerouslySetInnerHTML={{__html: marked(post.selftext)}} m={2}></Typography>}
+                    </Box>
                     <Box sx={{
                         display: "flex",
                     }}>
@@ -67,7 +72,6 @@ export default function PostComments(props: { post: any, comments: any }): JSX.E
                         if(!comment.body) { return };
                         return comment.replies ? <Comment comment={comment} replies={comment.replies} key={index} /> : <Comment comment={comment} key={index}/>})}
                 </Stack>
-
             </Box>
         </>
     )
