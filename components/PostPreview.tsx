@@ -11,6 +11,18 @@ export default function PostPreview(props: {post: any}) {
     const post = props.post;
     const router = useRouter();
     const thumbnailUrl = post.thumbnail ? post.thumbnail : null;
+    const getThumbnail = () => {
+        switch(post.thumbnail) {
+            case "self":
+                break;
+            case "nsfw":
+                break;
+            case "default":
+                break;
+            default:
+                return <Image src={thumbnailUrl} alt={post.name} layout="intrinsic" width="75" height="250"/>
+        }
+    }
     return (
         <>
             <Box sx={{
@@ -18,10 +30,11 @@ export default function PostPreview(props: {post: any}) {
                 gap: 1,
                 p: "10px",
                 backgroundColor: "grey.100",
-                m: "5px",
+                m: "1rem",
+                border: '1px solid #8080809F',
                 alignItems: 'center',
             }}>
-                <Stack sx={{alignItems: "center", minWidth: 50}}>
+                <Stack sx={{alignItems: "center", minWidth: 50, alignSelf: "start"}}>
                    <ArrowUpwardIcon />
                    <Typography variant="caption">{post.score}</Typography>
                    <ArrowDownwardIcon />  
@@ -31,11 +44,10 @@ export default function PostPreview(props: {post: any}) {
                         <Typography variant="caption"><Link href={`/r/${post.subreddit}`}>{`/r/${post.subreddit}`}</Link></Typography>
                         <Typography variant="body2"> &nbsp; {"• Posted by: "} 
                         <Link href={`/user/${post.author}`}>{"u/" + post.author}</Link>
-                        &nbsp; {`${5} hours ago.`} 
                         </Typography>
                     </Box>
                     <Typography variant="h6" component="h2">{`${post.title}`}</Typography>
-                    {(thumbnailUrl && thumbnailUrl !== 'self') ? <Image src={thumbnailUrl} alt={post.name} layout="responsive" width="240" height="100%"/> : null}
+                    {getThumbnail()}
                     <Box sx={{
                         display: "flex",
                     }}>
